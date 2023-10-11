@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>WebSocket Test</title>
+</head>
+
+<body>
+    <h1>WebSocket Test</h1>
+
+    <button onclick="subscribe()">Subscribe</button>
+    <button onclick="unsubscribe()">Unsubscribe</button>
+    <button onclick="notify()">Notify</button>
+
+    <div id="output"></div>
+
+    <script>
+        let socket;
+
+        function connectWebSocket() {
+            socket = new WebSocket("ws://localhost:8080/ws");
+
+            socket.onopen = function (event) {
+                console.log("WebSocket opened");
+            };
+
+            socket.onmessage = function (event) {
+                const outputDiv = document.getElementById("output");
+                const messageDiv = document.createElement("div");
+                messageDiv.innerText = "Received: " + event.data;
+                outputDiv.appendChild(messageDiv);
+            };
+
+            socket.onclose = function (event) {
+                console.log("WebSocket closed: ", event);
+            };
+        }
+
+        function subscribe() {
+            connectWebSocket();
+        }
+
+        function unsubscribe() {
+            if (socket) {
+                socket.close();
+            }
+        }
+
+        function notify() {
+            if (socket && socket.readyState === WebSocket.OPEN) {
+                socket.send("New notification!");
+            } else {
+                console.log("WebSocket connection is not open.");
+            }
+        }
+    </script>
+</body>
+
+</html>
