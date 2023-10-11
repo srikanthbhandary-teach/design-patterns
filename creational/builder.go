@@ -63,5 +63,5 @@ func (a *apiRequestBuilder) SetUrl(url string) ApiRequestBuilder {
 }
 
 func NewApiRequestBuilder() ApiRequestBuilder {
-	return &apiRequestBuilder{}
+	return &apiRequestBuilder{request: ApiRequest{}}
 }
